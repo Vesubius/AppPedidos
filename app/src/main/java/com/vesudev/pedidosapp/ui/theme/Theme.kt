@@ -13,16 +13,30 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Color(0xFFFF5A5A), // Un rojo más oscuro
+    secondary = Color(0xFFEF9A9A), // Un rojo pastel más suave
+    tertiary = Color(0xFFFF5252), // Un rojo coral más profundo
+    onPrimary = Color(0xFFFFFFFF), // Usamos blanco para contrastar con el fondo oscuro
+    background = Color(0xFF121212), // Fondo típico de modo oscuro
+    surface = Color(0xFF1E1E1E), // Un tono más claro para la superficie
+    onSecondary = Color(0xFFFFFFFF), // Blanco para contraste en elementos secundarios
+    onBackground = Color(0xFFE0E0E0), // Gris claro para textos sobre el fondo oscuro
+    onSurface = Color(0xFFE0E0E0) // Gris claro para textos sobre superficies oscuras
 )
 
+
 private val LightColorScheme = lightColorScheme(
-    primary = rojo,
-    secondary = rojoPastel,
-    tertiary = rojoCoral,
-    onPrimary = negro
+    primary = rojo,                   // Color primario
+    secondary = rojoPastel,            // Color secundario (usualmente tonos más suaves)
+    tertiary = rojoCoral,              // Color terciario
+    onPrimary = negro,                 // Color de los elementos sobre el color primario (como textos)
+    background = Color(0xFFFFFFFF),    // Fondo típico de modo claro (blanco)
+    surface = Color(0xFFF5F5F5),       // Color de las superficies como tarjetas y diálogos (gris claro)
+    onSecondary = Color(0xFF000000),   // Color de los elementos sobre el secundario (negro para buen contraste)
+    onBackground = Color(0xFF000000),  // Texto y elementos sobre el fondo (negro para legibilidad)
+    onSurface = Color(0xFF000000)      // Texto y elementos sobre las superficies (negro para buen contraste)
+
+
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
