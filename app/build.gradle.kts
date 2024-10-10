@@ -75,6 +75,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //Dependencias de la Preview
+    debugImplementation("androidx.compose.ui:ui-tooling:1.7.3")
+    implementation(platform("androidx.compose:compose-bom:2024.09.03"))
 
     //Navegacion
     implementation("androidx.navigation:navigation-compose:2.8.1")

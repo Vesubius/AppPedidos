@@ -6,8 +6,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,10 +24,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.vesudev.pedidosapp.navigation.AppScreens
@@ -31,70 +36,100 @@ import com.vesudev.pedidosapp.ui.theme.PedidosAppTheme
 fun SignUpScreen(navController: NavController) {
     PedidosAppTheme {
 
-        //Variables
-        var email by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
-        var confirmpassword by remember { mutableStateOf("") }
-        val context = LocalContext.current
+        Scaffold(
+            topBar = { SignUpTopBar() },
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-
-
-            //Campo Correo
-            Box {
-                Column {
-                    Text(text = "Correo")
-                    OutlinedTextField(
-                        value = email,
-                        onValueChange = { email = it },
-                        placeholder = { Text(text = "example@domain.com") })
+            content = { innerPadding ->
+                Column(modifier = Modifier.padding(innerPadding)) {
+                    SignUpContent(navController)
                 }
+            })
+
+
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SignUpTopBar() {
+    TopAppBar(
+        title = {
+            Text(
+                text = "Registrarse",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        colors = topAppBarColors(MaterialTheme.colorScheme.primary)
+    )
+}
+
+@Composable
+fun SignUpContent(navController: NavController) {
+//Variables
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmpassword by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+
+
+        //Campo Correo
+        Box {
+            Column {
+                Text(text = "Correo")
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    placeholder = { Text(text = "example@domain.com") })
             }
+        }
 
-            //Campo Contraseña
-            Box {
-                Column {
-                    Text(text = "Contraseña")
-                    OutlinedTextField(
-                        value = password,
-                        onValueChange = { password = it },
-                        placeholder = { Text(text = "******") })
-                }
+        //Campo Contraseña
+        Box {
+            Column {
+                Text(text = "Contraseña")
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    placeholder = { Text(text = "******") })
             }
+        }
 
-            //Campo Confirmar Contraseña
-            Box {
-                Column {
-                    Text(text = " Confirmar Contraseña")
-                    OutlinedTextField(
-                        value = confirmpassword,
-                        onValueChange = { confirmpassword = it },
-                        placeholder = { Text(text = "******") })
-                }
+        //Campo Confirmar Contraseña
+        Box {
+            Column {
+                Text(text = " Confirmar Contraseña")
+                OutlinedTextField(
+                    value = confirmpassword,
+                    onValueChange = { confirmpassword = it },
+                    placeholder = { Text(text = "******") })
             }
+        }
 
-            Button(onClick = {
-                if (email.isNotEmpty() and password.isNotEmpty()) {
-                    createUser(
-                        email,
-                        password,
-                        confirmpassword,
-                        navController,
-                        context
-                    )
-                } else {
-                    Toast.makeText(context, "Los campos estan vacios", Toast.LENGTH_SHORT).show()
-                    navController.navigate(route = AppScreens.SignUpScreen.route)
-                }
-            }) {
-                Text(
-                    text = "Registrarse"
+        Button(onClick = {
+            if (email.isNotEmpty() and password.isNotEmpty()) {
+                createUser(
+                    email,
+                    password,
+                    confirmpassword,
+                    navController,
+                    context
                 )
+            } else {
+                Toast.makeText(context, "Los campos estan vacios", Toast.LENGTH_SHORT).show()
+                navController.navigate(route = AppScreens.SignUpScreen.route)
             }
+        }) {
+            Text(
+                text = "Registrarse"
+            )
         }
     }
 }
@@ -133,8 +168,3 @@ fun createUser(
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SignUPreview(){
-    SignUpScreen(navController = rememberNavController())
-}

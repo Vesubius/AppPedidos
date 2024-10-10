@@ -2,15 +2,14 @@ package com.vesudev.pedidosapp.navigation
 
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
-import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vesudev.pedidosapp.screens.HomeScreen
 import com.vesudev.pedidosapp.screens.LoginScreen
 import com.vesudev.pedidosapp.screens.MainAppScreen
-import com.vesudev.pedidosapp.screens.ShoppingCartScreenScreen
+import com.vesudev.pedidosapp.screens.ProfileScreen
+import com.vesudev.pedidosapp.screens.ShoppingCartScreen
 import com.vesudev.pedidosapp.screens.SignUpScreen
 
 
@@ -40,7 +39,12 @@ fun AppNavigation() {
 
         //Pantalla ShoppingCartScreen
         composable(route = AppScreens.ShoppingCartScreen.route) {
-            ShoppingCartScreenScreen(navController)
+            ShoppingCartScreen(navController)
+        }
+
+        //Pantalla ProfileScreen
+        composable(route = AppScreens.ProfileScreen.route) {
+            ProfileScreen(navController)
         }
     }
 }
