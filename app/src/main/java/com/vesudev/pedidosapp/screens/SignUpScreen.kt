@@ -29,6 +29,8 @@ import androidx.navigation.NavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.vesudev.pedidosapp.navigation.AppScreens
+import com.vesudev.pedidosapp.reusable.GmailTextField
+import com.vesudev.pedidosapp.reusable.PasswordTextField
 import com.vesudev.pedidosapp.ui.theme.PedidosAppTheme
 
 
@@ -80,38 +82,12 @@ fun SignUpContent(navController: NavController) {
     ) {
 
 
-        //Campo Correo
-        Box {
-            Column {
-                Text(text = "Correo")
-                OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    placeholder = { Text(text = "example@domain.com") })
-            }
-        }
+        GmailTextField(email, onEmailChange = {email = it})
 
-        //Campo Contraseña
-        Box {
-            Column {
-                Text(text = "Contraseña")
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    placeholder = { Text(text = "******") })
-            }
-        }
+        PasswordTextField(password, onPasswordChange = {password = it})
 
-        //Campo Confirmar Contraseña
-        Box {
-            Column {
-                Text(text = " Confirmar Contraseña")
-                OutlinedTextField(
-                    value = confirmpassword,
-                    onValueChange = { confirmpassword = it },
-                    placeholder = { Text(text = "******") })
-            }
-        }
+        PasswordTextField(confirmpassword, onPasswordChange = {confirmpassword = it})
+
 
         Button(onClick = {
             if (email.isNotEmpty() and password.isNotEmpty()) {

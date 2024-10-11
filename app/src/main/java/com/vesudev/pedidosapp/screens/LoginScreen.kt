@@ -5,17 +5,14 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -43,8 +40,11 @@ import com.google.firebase.ktx.Firebase
 
 import com.vesudev.pedidosapp.R
 import com.vesudev.pedidosapp.navigation.AppScreens
+import com.vesudev.pedidosapp.reusable.AppTittle
+import com.vesudev.pedidosapp.reusable.GmailTextField
+import com.vesudev.pedidosapp.reusable.Logo
+import com.vesudev.pedidosapp.reusable.PasswordTextField
 import com.vesudev.pedidosapp.ui.theme.PedidosAppTheme
-
 
 
 @Composable
@@ -52,7 +52,7 @@ fun LoginScreen(navController: NavController) {
     PedidosAppTheme {
         Scaffold(
 
-            topBar = {LoginTopAppBar() },
+            topBar = { LoginTopAppBar() },
 
             content = { innerPadding ->
                 Column(Modifier.padding(innerPadding)) {
@@ -67,7 +67,13 @@ fun LoginScreen(navController: NavController) {
 @Composable
 fun LoginTopAppBar() {
     TopAppBar(
-        title = { Text(text = "Iniciar Sesion", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
+        title = {
+            Text(
+                text = "Iniciar Sesion",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
         colors = topAppBarColors(MaterialTheme.colorScheme.primary)
     )
 }
@@ -85,53 +91,13 @@ fun LoginScreenContent(navController: NavController) {
         val context = LocalContext.current
 
 
-        //Logo
-        Image(
-            modifier = Modifier
-                .height(200.dp)
-                .padding(top = 20.dp),
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo"
-        )
+        Logo()
 
+        AppTittle()
 
-        //Titulo
-        Text(
-            text = "Centro de Carnes San Isidro",
-            fontWeight = FontWeight.Bold,
-            fontSize = 25.sp
-        )
+        GmailTextField(email = email, onEmailChange = { email = it })
 
-        //Campo correo
-        Box {
-            Column {
-                Text(
-                    text = "Correo Electronico",
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 20.sp
-                )
-
-                OutlinedTextField(
-                    modifier = Modifier.padding(top = 10.dp),
-                    value = email,
-                    onValueChange = { email = it },
-                    placeholder = { Text(text = "example@domain.com") })
-            }
-        }
-
-
-        //Campo Contraseña
-        Box {
-            Column {
-                Text(text = "Contraseña", fontWeight = FontWeight.Normal, fontSize = 20.sp)
-
-                OutlinedTextField(
-                    modifier = Modifier.padding(top = 10.dp),
-                    value = password,
-                    onValueChange = { password = it },
-                    placeholder = { Text(text = "******") })
-            }
-        }
+        PasswordTextField(password = password, onPasswordChange = { password = it })
 
         // Texto/Link Para Registrarse
         Row {
@@ -154,68 +120,81 @@ fun LoginScreenContent(navController: NavController) {
             )
 
         }
-        //Boton Iniciar Sesion
-        Button(
-            modifier = Modifier.padding(top = 20.dp),
-            onClick = {
-                if (email.isNotEmpty() and password.isNotEmpty()) {
-                    iniciarSesion(email, password, context, navController)
-                } else {
-                    Toast.makeText(context, "Los campos estan vacios", Toast.LENGTH_SHORT)
-                        .show()
-                }
 
-            }) {
-            Text(
-                text = "Iniciar Sesion"
-            )
-        }
+        LoginLogInButton(email,password,context,navController)
 
+        LoginOptions()
+    }
+}
 
+@Composable
+fun LoginOptions() {
 
-        Row {
-            Image(
-                modifier = Modifier.padding(end = 10.dp),
-                painter = painterResource(id = R.drawable.line),
-                contentDescription = "Line"
-            )
+    Row {
+        Image(
+            modifier = Modifier.padding(end = 10.dp),
+            painter = painterResource(id = R.drawable.line),
+            contentDescription = "Line"
+        )
 
-            //Iniciar con...
-            Text(
-                modifier = Modifier
-                    .padding(top = 5.dp, start = 3.dp)
-                    .clickable { },
-                text = "Iniciar con...",
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 12.sp,
-                color = Color.Black
+        //Iniciar con...
+        Text(
+            modifier = Modifier
+                .padding(top = 5.dp, start = 3.dp)
+                .clickable { },
+            text = "Iniciar con...",
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 12.sp,
+            color = Color.Black
 
-            )
+        )
 
-            Image(
-                modifier = Modifier.padding(start = 10.dp),
-                painter = painterResource(id = R.drawable.line),
-                contentDescription = "Line"
-            )
+        Image(
+            modifier = Modifier.padding(start = 10.dp),
+            painter = painterResource(id = R.drawable.line),
+            contentDescription = "Line"
+        )
 
-        }
+    }
+
+    Row {
+        Image(
+            modifier = Modifier.clickable { },
+            painter = painterResource(id = R.drawable.google),
+            contentDescription = "Iniciar Sesion con google"
+        )
 
 
+        Image(
+            modifier = Modifier.clickable { },
+            painter = painterResource(id = R.drawable.facebook),
+            contentDescription = "Iniciar Sesion con facebook"
+        )
+    }
+}
 
-        Row {
-            Image(
-                modifier = Modifier.clickable { },
-                painter = painterResource(id = R.drawable.google),
-                contentDescription = "Iniciar Sesion con google"
-            )
+@Composable
+fun LoginLogInButton(
+    email: String,
+    password: String,
+    context: Context,
+    navController: NavController
+) {
+    //Boton Iniciar Sesion
+    Button(
+        modifier = Modifier.padding(top = 20.dp),
+        onClick = {
+            if (email.isNotEmpty() and password.isNotEmpty()) {
+                iniciarSesion(email, password, context, navController)
+            } else {
+                Toast.makeText(context, "Los campos estan vacios", Toast.LENGTH_SHORT)
+                    .show()
+            }
 
-
-            Image(
-                modifier = Modifier.clickable { },
-                painter = painterResource(id = R.drawable.facebook),
-                contentDescription = "Iniciar Sesion con facebook"
-            )
-        }
+        }) {
+        Text(
+            text = "Iniciar Sesion"
+        )
     }
 }
 
