@@ -2,9 +2,12 @@ package com.vesudev.pedidosapp.navigation
 
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.vesudev.pedidosapp.screens.DetailScreen
 import com.vesudev.pedidosapp.screens.HomeScreen
 import com.vesudev.pedidosapp.screens.LoginScreen
 import com.vesudev.pedidosapp.screens.MainAppScreen
@@ -15,7 +18,7 @@ import com.vesudev.pedidosapp.screens.SignUpScreen
 
 @Composable
 fun AppNavigation() {
-    var navController = rememberNavController()
+    val navController = rememberNavController()
     NavHost(navController = navController, startDestination = AppScreens.HomeScreen.route) {
         //Pantalla homeScreen
         composable(route = AppScreens.HomeScreen.route) {
@@ -45,6 +48,19 @@ fun AppNavigation() {
         //Pantalla ProfileScreen
         composable(route = AppScreens.ProfileScreen.route) {
             ProfileScreen(navController)
+        }
+
+        composable(
+            route = "detail/{name}/{uri}",
+            arguments = listOf(
+                navArgument("name") { type = NavType.StringType },
+                navArgument("uri") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val name = backStackEntry.arguments?.getString("name") ?: "Unknown"
+            val imageUrl = backStackEntry.arguments?.getString("uri") ?: ""
+
+            DetailScreen(navController, fileName = name, imageUrl = imageUrl)
         }
     }
 }

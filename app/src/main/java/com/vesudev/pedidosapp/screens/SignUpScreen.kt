@@ -3,7 +3,6 @@ package com.vesudev.pedidosapp.screens
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +12,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -85,28 +83,39 @@ fun SignUpContent(navController: NavController) {
         GmailTextField(email, onEmailChange = {email = it})
 
         PasswordTextField(password, onPasswordChange = {password = it})
-
+        
         PasswordTextField(confirmpassword, onPasswordChange = {confirmpassword = it})
-
+        
 
         Button(onClick = {
-            if (email.isNotEmpty() and password.isNotEmpty()) {
-                createUser(
-                    email,
-                    password,
-                    confirmpassword,
-                    navController,
-                    context
-                )
-            } else {
-                Toast.makeText(context, "Los campos estan vacios", Toast.LENGTH_SHORT).show()
-                navController.navigate(route = AppScreens.SignUpScreen.route)
-            }
+            Register(email, password, confirmpassword, navController, context)
         }) {
             Text(
                 text = "Registrarse"
             )
         }
+    }
+}
+
+
+fun Register(
+    email: String,
+    password: String,
+    confirmpassword: String,
+    navController: NavController,
+    context: Context
+) {
+    if (email.isNotEmpty() and password.isNotEmpty()) {
+        createUser(
+            email,
+            password,
+            confirmpassword,
+            navController,
+            context
+        )
+    } else {
+        Toast.makeText(context, "Los campos estan vacios", Toast.LENGTH_SHORT).show()
+        navController.navigate(route = AppScreens.SignUpScreen.route)
     }
 }
 

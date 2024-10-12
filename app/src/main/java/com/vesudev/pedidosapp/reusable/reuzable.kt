@@ -1,5 +1,6 @@
 package com.vesudev.pedidosapp.reusable
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,11 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -22,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -33,8 +31,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.vesudev.pedidosapp.R
 import com.vesudev.pedidosapp.navigation.AppScreens
+
 
 @Composable
 fun Logo() {
@@ -148,8 +149,23 @@ fun PasswordTextField(password: String, onPasswordChange: (String) -> Unit) {
 }
 
 
+fun extractFileNameWithoutExtension(url: String): String {
+    // Primero, decodificamos la URL
+    val decodedUrl = java.net.URLDecoder.decode(url, "UTF-8")
+    // Buscamos el inicio del nombre del archivo después de la última '/'
+    val startIndex = decodedUrl.lastIndexOf("/") + 1
+    // Buscamos el final del nombre antes de los parámetros '?'
+    val endIndex = decodedUrl.indexOf("?")
 
-
+    // Si ambos índices son válidos, extraemos el nombre del archivo
+    if (startIndex != -1 && endIndex != -1) {
+        val fileName = decodedUrl.substring(startIndex, endIndex)
+        // Quitamos la extensión del archivo (todo lo que sigue al último '.')
+        return fileName.substringBeforeLast(".")
+    } else {
+        return "Nombre desconocido"
+    }
+}
 
 
 
