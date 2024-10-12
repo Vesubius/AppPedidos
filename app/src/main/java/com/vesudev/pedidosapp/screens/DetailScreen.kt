@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,8 +22,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.vesudev.pedidosapp.cartViewModel.CartViewModel
 import com.vesudev.pedidosapp.navigation.AppScreens
 
 
@@ -31,6 +34,7 @@ fun DetailScreen(
     navController: NavController,
     fileName: String,
     imageUrl: String,
+    cartViewModel: CartViewModel,
 
     ) {
     Scaffold(
@@ -44,12 +48,14 @@ fun DetailScreen(
                 .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
-        ) { DetailContent(imageUrl, fileName) }
+        ) { DetailContent(imageUrl, fileName,cartViewModel) }
     }
 }
 
 @Composable
-fun DetailContent(imageUrl: String, fileName: String) {
+fun DetailContent(imageUrl: String, fileName: String,cartViewModel: CartViewModel) {
+
+
     // Mostrar la imagen
     AsyncImage(
         model = imageUrl,
@@ -67,6 +73,11 @@ fun DetailContent(imageUrl: String, fileName: String) {
         text = "Detalles del producto: $fileName",
         modifier = Modifier.padding(8.dp)
     )
+
+    //Boton agregar al carrito
+    Button(onClick = { cartViewModel.addItem(imageUrl)}) {
+        Text(text="Agregar al carrito")
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

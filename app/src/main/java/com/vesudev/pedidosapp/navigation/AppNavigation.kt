@@ -2,11 +2,13 @@ package com.vesudev.pedidosapp.navigation
 
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.vesudev.pedidosapp.cartViewModel.CartViewModel
 import com.vesudev.pedidosapp.screens.DetailScreen
 import com.vesudev.pedidosapp.screens.HomeScreen
 import com.vesudev.pedidosapp.screens.LoginScreen
@@ -19,6 +21,8 @@ import com.vesudev.pedidosapp.screens.SignUpScreen
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val cartViewModel: CartViewModel = viewModel()
+
     NavHost(navController = navController, startDestination = AppScreens.HomeScreen.route) {
         //Pantalla homeScreen
         composable(route = AppScreens.HomeScreen.route) {
@@ -42,7 +46,7 @@ fun AppNavigation() {
 
         //Pantalla ShoppingCartScreen
         composable(route = AppScreens.ShoppingCartScreen.route) {
-            ShoppingCartScreen(navController)
+            ShoppingCartScreen(navController,cartViewModel)
         }
 
         //Pantalla ProfileScreen
@@ -50,17 +54,20 @@ fun AppNavigation() {
             ProfileScreen(navController)
         }
 
+        //Pantalla detalles de Productos
         composable(
             route = "detail/{name}/{uri}",
             arguments = listOf(
                 navArgument("name") { type = NavType.StringType },
-                navArgument("uri") { type = NavType.StringType }
+                navArgument("uri") { type = NavType.StringType },
+
             )
         ) { backStackEntry ->
+
             val name = backStackEntry.arguments?.getString("name") ?: "Unknown"
             val imageUrl = backStackEntry.arguments?.getString("uri") ?: ""
 
-            DetailScreen(navController, fileName = name, imageUrl = imageUrl)
+            DetailScreen(navController, fileName = name, imageUrl = imageUrl,cartViewModel)
         }
     }
 }

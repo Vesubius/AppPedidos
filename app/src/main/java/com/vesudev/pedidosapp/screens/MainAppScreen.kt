@@ -19,7 +19,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,10 +43,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.vesudev.pedidosapp.cartViewModel.CartViewModel
 import com.vesudev.pedidosapp.navigation.AppScreens
 
 import com.vesudev.pedidosapp.reusable.extractFileNameWithoutExtension
@@ -56,6 +57,8 @@ import com.vesudev.pedidosapp.ui.theme.PedidosAppTheme
 
 @Composable
 fun MainAppScreen(navController: NavController) {
+    val cartViewModel: CartViewModel = viewModel()
+
     val urlsEmbutidos = remember { mutableStateListOf("") }
     val urlsCarnes = remember { mutableStateListOf("") }
 
@@ -78,7 +81,7 @@ fun MainAppScreen(navController: NavController) {
 
         Scaffold(
 
-            topBar = { MainAppScreenTopBar(navController) },
+            topBar = { MainAppScreenTopBar(navController,cartViewModel) },
 
             content = { innerPadding ->
                 MainAppContent(
@@ -93,7 +96,7 @@ fun MainAppScreen(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainAppScreenTopBar(navController: NavController) {
+fun MainAppScreenTopBar(navController: NavController, cartViewModel: CartViewModel) {
     TopAppBar(
         title = {
             Text(
@@ -116,7 +119,8 @@ fun MainAppScreenTopBar(navController: NavController) {
             IconButton(onClick = { navController.navigate(route = AppScreens.ShoppingCartScreen.route) }) {
                 Icon(
                     Icons.Default.ShoppingCart,
-                    contentDescription = "Carrito de compras"
+                    contentDescription = "Carrito de compras",
+                    tint = Color.Black
                 )
             }
         }
@@ -130,6 +134,8 @@ fun MainAppContent(
     urlEmbutidos: SnapshotStateList<String>,
     navController: NavController
 ) {
+
+
     // variable de estado de scroll de la lista de carnes
     val scrollCarnes = rememberScrollState()
     val scrollEmbutidos = rememberScrollState()
@@ -146,6 +152,7 @@ fun MainAppContent(
             scrollCarnes = scrollCarnes,
             urlcarnes = urlcarnes,
             navController = navController
+
         )
 
         //Seccion Embutidos
@@ -160,6 +167,7 @@ fun MeatSection(
     scrollCarnes: ScrollState,
     urlcarnes: SnapshotStateList<String>,
     navController: NavController
+
 ) {
     Box {
         Column {
@@ -177,24 +185,25 @@ fun MeatSection(
                     .border(width = 1.dp, color = Color.Black)
                     .horizontalScroll(state = scrollCarnes)
             ) {
-                Column {
-                    Row() {
-                        urlcarnes.forEach() { uri ->
-                            val name = extractFileNameWithoutExtension(uri)
-                            val encodedUri = Uri.encode(uri)
-                            AsyncImage(
-                                modifier = Modifier
-                                    .clickable { navController.navigate("detail/${name}/${encodedUri}") }
-                                    .padding(5.dp)
-                                    .height(150.dp),
-                                model = uri,
-                                contentDescription = "",
-                                contentScale = ContentScale.Crop
-                            )
-                        }
+
+                Row() {
+
+                    urlcarnes.forEach() { uri ->
+                        val name = extractFileNameWithoutExtension(uri)
+                        val encodedUri = Uri.encode(uri)
+                        AsyncImage(
+                            modifier = Modifier
+                                .clickable { navController.navigate("detail/${name}/${encodedUri}") }
+                                .padding(5.dp)
+                                .height(150.dp),
+                            model = uri,
+                            contentDescription = "",
+                            contentScale = ContentScale.Crop
+                        )
                     }
 
                 }
+
             }
         }
     }
@@ -206,6 +215,7 @@ fun sausagesSection(
     scrollEmbutidos: ScrollState,
     urlEmbutidos: SnapshotStateList<String>,
     navController: NavController
+
 ) {
     //Seccion de Embutidos
     Box {
