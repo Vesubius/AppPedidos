@@ -56,11 +56,14 @@ import com.vesudev.pedidosapp.ui.theme.PedidosAppTheme
 
 
 @Composable
-fun MainAppScreen(navController: NavController) {
+fun MainAppScreen(
+    navController: NavController,
+    urlsEmbutidos: SnapshotStateList<String>,
+    urlsCarnes: SnapshotStateList<String>
+) {
     val cartViewModel: CartViewModel = viewModel()
 
-    val urlsEmbutidos = remember { mutableStateListOf("") }
-    val urlsCarnes = remember { mutableStateListOf("") }
+
 
     PedidosAppTheme {
 
@@ -81,7 +84,7 @@ fun MainAppScreen(navController: NavController) {
 
         Scaffold(
 
-            topBar = { MainAppScreenTopBar(navController,cartViewModel) },
+            topBar = { MainAppScreenTopBar(navController, cartViewModel) },
 
             content = { innerPadding ->
                 MainAppContent(

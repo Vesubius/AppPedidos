@@ -2,6 +2,8 @@ package com.vesudev.pedidosapp.navigation
 
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -9,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.vesudev.pedidosapp.cartViewModel.CartViewModel
+import com.vesudev.pedidosapp.reusable.extractFileNameWithoutExtension
 import com.vesudev.pedidosapp.screens.DetailScreen
 import com.vesudev.pedidosapp.screens.HomeScreen
 import com.vesudev.pedidosapp.screens.LoginScreen
@@ -20,6 +23,15 @@ import com.vesudev.pedidosapp.screens.SignUpScreen
 
 @Composable
 fun AppNavigation() {
+
+
+    val urlsEmbutidos = remember { mutableStateListOf("") }
+    val urlsCarnes = remember { mutableStateListOf("") }
+
+
+
+
+
     val navController = rememberNavController()
     val cartViewModel: CartViewModel = viewModel()
 
@@ -39,14 +51,15 @@ fun AppNavigation() {
             SignUpScreen(navController)
         }
 
+        //Pantalla Principal
         composable(route = AppScreens.MainAppScreen.route) {
-            MainAppScreen(navController)
+            MainAppScreen(navController, urlsEmbutidos, urlsCarnes)
 
         }
 
         //Pantalla ShoppingCartScreen
         composable(route = AppScreens.ShoppingCartScreen.route) {
-            ShoppingCartScreen(navController,cartViewModel)
+            ShoppingCartScreen(navController, cartViewModel,)
         }
 
         //Pantalla ProfileScreen
@@ -61,14 +74,15 @@ fun AppNavigation() {
                 navArgument("name") { type = NavType.StringType },
                 navArgument("uri") { type = NavType.StringType },
 
-            )
+                )
         ) { backStackEntry ->
 
             val name = backStackEntry.arguments?.getString("name") ?: "Unknown"
             val imageUrl = backStackEntry.arguments?.getString("uri") ?: ""
 
-            DetailScreen(navController, fileName = name, imageUrl = imageUrl,cartViewModel)
+            DetailScreen(navController, fileName = name, imageUrl = imageUrl, cartViewModel)
         }
     }
 }
+
 
