@@ -112,6 +112,7 @@ fun ShoppingContent(navController: NavController, cartViewModel: CartViewModel) 
                     }
                 }
             }
+
             Spacer(modifier = Modifier.height(8.dp)) // Espaciado entre imágenes
 
         }

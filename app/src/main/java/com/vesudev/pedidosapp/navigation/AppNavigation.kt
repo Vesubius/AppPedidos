@@ -13,10 +13,12 @@ import androidx.navigation.navArgument
 import com.vesudev.pedidosapp.cartViewModel.CartViewModel
 import com.vesudev.pedidosapp.reusable.extractFileNameWithoutExtension
 import com.vesudev.pedidosapp.screens.DetailScreen
+import com.vesudev.pedidosapp.screens.FirstOnBoarding
 import com.vesudev.pedidosapp.screens.HomeScreen
 import com.vesudev.pedidosapp.screens.LoginScreen
 import com.vesudev.pedidosapp.screens.MainAppScreen
 import com.vesudev.pedidosapp.screens.ProfileScreen
+import com.vesudev.pedidosapp.screens.SecondOnBoarding
 import com.vesudev.pedidosapp.screens.ShoppingCartScreen
 import com.vesudev.pedidosapp.screens.SignUpScreen
 
@@ -24,22 +26,30 @@ import com.vesudev.pedidosapp.screens.SignUpScreen
 @Composable
 fun AppNavigation() {
 
-
     val urlsEmbutidos = remember { mutableStateListOf("") }
     val urlsCarnes = remember { mutableStateListOf("") }
-
-
-
 
 
     val navController = rememberNavController()
     val cartViewModel: CartViewModel = viewModel()
 
-    NavHost(navController = navController, startDestination = AppScreens.HomeScreen.route) {
+    NavHost(navController = navController, startDestination = AppScreens.FirstOnBoarding.route) {
+
+        //Pantalla FirstOnBoarding
+        composable(route = AppScreens.FirstOnBoarding.route){
+            FirstOnBoarding(navController)
+        }
+
+        //Pantalla SecondOnBoarding
+        composable(route = AppScreens.SecondOnBoarding.route){
+            SecondOnBoarding(navController)
+        }
+
         //Pantalla homeScreen
         composable(route = AppScreens.HomeScreen.route) {
             HomeScreen(navController)
         }
+
 
         //Pantalla LoginScreen
         composable(route = AppScreens.LoginScreen.route) {
