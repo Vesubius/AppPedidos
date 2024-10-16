@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -53,7 +54,7 @@ fun FirstOnBoarding(navController: NavController) {
             }
         }
 
-        Box() {
+        Box(modifier = Modifier.padding(bottom = 70.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -70,17 +71,17 @@ fun FirstOnBoarding(navController: NavController) {
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Image(
-                            modifier = Modifier.height(10.dp),
+                        Image(contentScale = ContentScale.Crop,
+                            modifier = Modifier.height(12.dp),
                             painter = painterResource(id = R.drawable.circle),
                             contentDescription = "marcador actual de Onboarding",
                             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                         )
 
                         Image(
-                            modifier = Modifier.height(80.dp),
-                            painter = painterResource(id = R.drawable.line),
-                            contentDescription = "marcador actual de Onboarding",
+                            modifier = Modifier.height(13.dp),
+                            painter = painterResource(id = R.drawable.circle),
+                            contentDescription = "linea siguiente",
                             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                         )
                     }

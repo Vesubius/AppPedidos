@@ -44,18 +44,20 @@ fun SecondOnBoarding(navController: NavController) {
         //Texto
         Box {
             Column(
-                modifier = Modifier.padding(bottom =  150.dp),
+                modifier = Modifier.padding(bottom = 150.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = "Mira tus Pedidos", fontWeight = FontWeight.Bold, fontSize = 25.sp)
                 Spacer(modifier = Modifier.height(15.dp))
-                Text(text = "Mira un Resumen de tus productos\n" +
-                        "junto a el precio total de tu pedido", fontSize = 20.sp)
+                Text(
+                    text = "Mira un Resumen de tus productos\n" +
+                            "junto a el precio total de tu pedido", fontSize = 20.sp
+                )
             }
         }
 
-        Box() {
+        Box(modifier = Modifier.padding(bottom = 70.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -73,14 +75,15 @@ fun SecondOnBoarding(navController: NavController) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Image(
-                            modifier = Modifier.height(80.dp),
-                            painter = painterResource(id = R.drawable.line),
-                            contentDescription = "marcador actual de Onboarding",
+                            modifier = Modifier.height(12.dp),
+                            painter = painterResource(id = R.drawable.circle),
+                            contentDescription = "linea anterior",
                             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                         )
 
                         Image(
-                            modifier = Modifier.height(10.dp),
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.height(13.dp),
                             painter = painterResource(id = R.drawable.circle),
                             contentDescription = "marcador actual de Onboarding",
                             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
@@ -88,7 +91,7 @@ fun SecondOnBoarding(navController: NavController) {
                     }
                 }
 
-                Button(onClick = { navController.navigate(route = AppScreens.SecondOnBoarding.route) }) {
+                Button(onClick = { navController.navigate(route = AppScreens.HomeScreen.route) }) {
                     Text(
                         text = "Siguiente"
                     )
