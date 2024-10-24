@@ -82,10 +82,9 @@ fun SignUpContent(navController: NavController) {
 
         GmailTextField(email, onEmailChange = {email = it})
 
-        PasswordTextField(password, onPasswordChange = {password = it})
+        PasswordTextField(password = password, labeltext = "Contraseña", onPasswordChange = {password = it})
         
-        PasswordTextField(confirmpassword, onPasswordChange = {confirmpassword = it})
-        
+        PasswordTextField(password = confirmpassword, labeltext = "Confirmar Contraseña", onPasswordChange = {confirmpassword = it})
 
         Button(onClick = {
             Register(email, password, confirmpassword, navController, context)

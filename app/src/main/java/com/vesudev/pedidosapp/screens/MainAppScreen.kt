@@ -1,6 +1,7 @@
 package com.vesudev.pedidosapp.screens
 
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.ScrollState
@@ -19,6 +20,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,10 +43,12 @@ import androidx.compose.ui.layout.ContentScale
 
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -59,11 +63,9 @@ import com.vesudev.pedidosapp.ui.theme.PedidosAppTheme
 fun MainAppScreen(
     navController: NavController,
     urlsEmbutidos: SnapshotStateList<String>,
-    urlsCarnes: SnapshotStateList<String>
+    urlsCarnes: SnapshotStateList<String>,
+    cartViewModel: CartViewModel
 ) {
-    val cartViewModel: CartViewModel = viewModel()
-
-
 
     PedidosAppTheme {
 
@@ -89,7 +91,7 @@ fun MainAppScreen(
             content = { innerPadding ->
                 MainAppContent(
                     modifier = Modifier.padding(innerPadding),
-                    urlsCarnes, urlsEmbutidos, navController
+                    urlsCarnes, urlsEmbutidos, navController,cartViewModel
                 )
             })
 
@@ -135,7 +137,8 @@ fun MainAppContent(
     modifier: Modifier,
     urlcarnes: SnapshotStateList<String>,
     urlEmbutidos: SnapshotStateList<String>,
-    navController: NavController
+    navController: NavController,
+    cartViewModel: CartViewModel
 ) {
 
 
@@ -154,12 +157,16 @@ fun MainAppContent(
         MeatSection(
             scrollCarnes = scrollCarnes,
             urlcarnes = urlcarnes,
-            navController = navController
+            navController = navController,
+            cartViewModel = cartViewModel
 
         )
 
         //Seccion Embutidos
-        sausagesSection(scrollEmbutidos, urlEmbutidos, navController)
+        sausagesSection(scrollEmbutidos = scrollEmbutidos,
+            urlEmbutidos = urlEmbutidos,
+            navController = navController,
+            cartViewModel = cartViewModel)
 
     }
 }
@@ -169,9 +176,10 @@ fun MainAppContent(
 fun MeatSection(
     scrollCarnes: ScrollState,
     urlcarnes: SnapshotStateList<String>,
-    navController: NavController
-
+    navController: NavController,
+    cartViewModel: CartViewModel
 ) {
+
     Box {
         Column {
             //Titulo de la seccion
@@ -194,15 +202,19 @@ fun MeatSection(
                     urlcarnes.forEach() { uri ->
                         val name = extractFileNameWithoutExtension(uri)
                         val encodedUri = Uri.encode(uri)
-                        AsyncImage(
-                            modifier = Modifier
-                                .clickable { navController.navigate("detail/${name}/${encodedUri}") }
-                                .padding(5.dp)
-                                .height(150.dp),
-                            model = uri,
-                            contentDescription = "",
-                            contentScale = ContentScale.Crop
-                        )
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            AsyncImage(
+                                modifier = Modifier
+                                    .clickable { navController.navigate("detail/${name}/${encodedUri}") }
+                                    .padding(5.dp)
+                                    .height(150.dp),
+                                model = uri,
+                                contentDescription = "",
+                                contentScale = ContentScale.Crop
+                            )
+
+                            Button(onClick = {cartViewModel.addItem(uri)}) { Text(text = "Agregar $name") }
+                        }
                     }
 
                 }
@@ -217,7 +229,8 @@ fun MeatSection(
 fun sausagesSection(
     scrollEmbutidos: ScrollState,
     urlEmbutidos: SnapshotStateList<String>,
-    navController: NavController
+    navController: NavController,
+    cartViewModel: CartViewModel
 
 ) {
     //Seccion de Embutidos
@@ -240,16 +253,19 @@ fun sausagesSection(
                 urlEmbutidos.forEach() { uri ->
                     val name = extractFileNameWithoutExtension(uri)
                     val encodedUri = Uri.encode(uri)
-                    AsyncImage(
-                        modifier = Modifier
-                            .clickable { navController.navigate("detail/${name}/${encodedUri}") }
-                            .padding(5.dp)
-                            .height(150.dp),
-                        model = uri,
-                        contentDescription = "",
-                        contentScale = ContentScale.Crop
-                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        AsyncImage(
+                            modifier = Modifier
+                                .clickable { navController.navigate("detail/${name}/${encodedUri}") }
+                                .padding(5.dp)
+                                .height(150.dp),
+                            model = uri,
+                            contentDescription = "",
+                            contentScale = ContentScale.Crop
+                        )
 
+                        Button(onClick = {cartViewModel.addItem(uri)}) { Text(text = "Agregar $name") }
+                    }
                 }
 
             }
@@ -301,4 +317,3 @@ fun getUrlListOnFirebase(folderName: String, imageURLlist: SnapshotStateList<Str
     }
 
 }
-

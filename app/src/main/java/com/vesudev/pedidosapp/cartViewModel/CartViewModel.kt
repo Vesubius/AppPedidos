@@ -1,6 +1,13 @@
 package com.vesudev.pedidosapp.cartViewModel
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
+
+
 
 class CartViewModel : ViewModel() {
 
@@ -8,10 +15,14 @@ class CartViewModel : ViewModel() {
 
 
     fun addItem(url: String) {
-        cartItems.add(url)
+        if (cartItems.contains(url)) {
+
+        }else {
+            cartItems.add(url)
+        }
     }
 
-    fun deleteItem(url: String){
+    fun deleteItem(url: String) {
         cartItems.remove(url)
     }
 }

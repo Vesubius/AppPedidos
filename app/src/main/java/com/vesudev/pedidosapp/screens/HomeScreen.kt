@@ -25,8 +25,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import com.vesudev.pedidosapp.navigation.AppScreens
 import com.vesudev.pedidosapp.reusable.Logo
+import com.vesudev.pedidosapp.reusable.OpenFacebookButton
 import com.vesudev.pedidosapp.reusable.TestButton
-import com.vesudev.pedidosapp.reusable.watermark
+
 import com.vesudev.pedidosapp.ui.theme.PedidosAppTheme
 
 
@@ -65,7 +66,8 @@ fun MainAppContent(padding: PaddingValues, navController: NavController) {
 
         SignUpButton(navController)
 
-        watermark()
+        //By VesuDev Text
+        OpenFacebookButton()
 
     }
 

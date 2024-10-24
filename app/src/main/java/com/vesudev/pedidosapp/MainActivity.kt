@@ -6,10 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import com.vesudev.pedidosapp.navigation.AppNavigation
-import com.vesudev.pedidosapp.navigation.AppScreens
+import com.vesudev.pedidosapp.navigation.FirtsNavigationGraph
 import com.vesudev.pedidosapp.ui.theme.PedidosAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +18,7 @@ class MainActivity : ComponentActivity() {
 
             PedidosAppTheme {
 
-                AppNavigation()
+                FirtsNavigationGraph()
             }
         }
 
@@ -31,6 +28,6 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun AppPreview() {
-    AppNavigation()
+    FirtsNavigationGraph()
 }
 

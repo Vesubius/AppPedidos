@@ -97,7 +97,10 @@ fun LoginScreenContent(navController: NavController) {
 
         GmailTextField(email = email, onEmailChange = { email = it })
 
-        PasswordTextField(password = password, onPasswordChange = { password = it })
+        PasswordTextField(
+            password = password,
+            labeltext = "Contraseña",
+            onPasswordChange = { password = it })
 
         // Texto/Link Para Registrarse
         Row {
@@ -121,7 +124,7 @@ fun LoginScreenContent(navController: NavController) {
 
         }
 
-        LoginLogInButton(email,password,context,navController)
+        LoginLogInButton(email, password, context, navController)
 
         LoginOptions()
     }
@@ -216,6 +219,7 @@ fun iniciarSesion(
             Toast.makeText(context, "Inicio de Sesion Fallido:${task.exception}", Toast.LENGTH_LONG)
                 .show()
             navController.navigate(route = AppScreens.LoginScreen.route)
+
         }
     }
 }

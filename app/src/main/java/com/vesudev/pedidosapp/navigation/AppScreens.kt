@@ -10,5 +10,6 @@ open class AppScreens (val route: String){
     object MainAppScreen:AppScreens("MainAppScreen")
     object ShoppingCartScreen:AppScreens("ShoppingCartScreen")
     object ProfileScreen:AppScreens("ProfileScreen")
+    object OrdersScreen:AppScreens("OrdersScreen")
 
 }

@@ -139,9 +139,7 @@ fun Counter() {
 
 sealed class ProductDB(val name: String, val price: String) {
     object Lomo : ProductDB("lomo", "₡2000")
-    object Pollo : ProductDB("Pollo", "₡1500")
     object Cerdo : ProductDB("Cerdo", "₡1800")
-    object Pescado : ProductDB("Pescado", "₡2500")
     object Salchichon : ProductDB("Salchichón", "₡1000")
     object Chuleta : ProductDB("chuleta","₡3500")
     object Bisteck : ProductDB("Bisteck","₡2500")
@@ -150,9 +148,7 @@ sealed class ProductDB(val name: String, val price: String) {
         fun findPriceByName(name: String): String {
             return when (name) {
                 Lomo.name -> Lomo.price
-                Pollo.name -> Pollo.price
                 Cerdo.name -> Cerdo.price
-                Pescado.name -> Pescado.price
                 Salchichon.name -> Salchichon.price
                 Chuleta.name -> Chuleta.price
                 Bisteck.name -> Bisteck.name
