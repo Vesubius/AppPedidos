@@ -107,7 +107,8 @@ fun MainAppScreenTopBar(navController: NavController, cartViewModel: CartViewMod
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Centro de Carnes San Isidro",
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         colors = topAppBarColors(MaterialTheme.colorScheme.primary),
@@ -115,7 +116,8 @@ fun MainAppScreenTopBar(navController: NavController, cartViewModel: CartViewMod
             IconButton(onClick = { navController.navigate(route = AppScreens.ProfileScreen.route) }) {
                 Icon(
                     Icons.Default.Person,
-                    contentDescription = "Perfil"
+                    contentDescription = "Perfil",
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
@@ -125,7 +127,8 @@ fun MainAppScreenTopBar(navController: NavController, cartViewModel: CartViewMod
                 Icon(
                     Icons.Default.ShoppingCart,
                     contentDescription = "Carrito de compras",
-                    tint = Color.Black
+                    tint = MaterialTheme.colorScheme.onPrimary,
+
                 )
             }
         }

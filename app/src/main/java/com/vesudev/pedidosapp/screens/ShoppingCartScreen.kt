@@ -56,11 +56,24 @@ fun ShoppingCartScreen(navController: NavController, cartViewModel: CartViewMode
 @Composable
 fun ShoppingTopBar(navController: NavController) {
     TopAppBar(
-        title = { Text("Su Compra") },
+
+        title = {
+            Text(
+                text = "Su Compra",
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        },
         colors = topAppBarColors(MaterialTheme.colorScheme.primary),
+
         navigationIcon = {
-            IconButton(onClick = { navController.navigate(route = AppScreens.MainAppScreen.route) }) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+            IconButton(onClick = { navController.navigate(route = AppScreens.MainAppScreen.route){
+                popUpTo(AppScreens.MainAppScreen.route) { inclusive = true }
+            } }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
             }
         }
     )
@@ -120,8 +133,6 @@ fun ShoppingContent(navController: NavController, cartViewModel: CartViewModel) 
 }
 
 
-
-
 @Composable
 fun Counter() {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -141,8 +152,8 @@ sealed class ProductDB(val name: String, val price: String) {
     object Lomo : ProductDB("lomo", "₡2000")
     object Cerdo : ProductDB("Cerdo", "₡1800")
     object Salchichon : ProductDB("Salchichón", "₡1000")
-    object Chuleta : ProductDB("chuleta","₡3500")
-    object Bisteck : ProductDB("Bisteck","₡2500")
+    object Chuleta : ProductDB("chuleta", "₡3500")
+    object Bisteck : ProductDB("Bisteck", "₡2500")
 
     companion object {
         fun findPriceByName(name: String): String {

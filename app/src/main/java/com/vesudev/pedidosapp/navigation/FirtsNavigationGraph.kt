@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.vesudev.pedidosapp.AdminDB.AdminsDB
 import com.vesudev.pedidosapp.cartViewModel.CartViewModel
 import com.vesudev.pedidosapp.screens.DetailScreen
 import com.vesudev.pedidosapp.screens.FirstOnBoarding
@@ -21,7 +22,6 @@ import com.vesudev.pedidosapp.screens.HomeScreen
 import com.vesudev.pedidosapp.screens.LoginScreen
 import com.vesudev.pedidosapp.screens.MainAppScreen
 import com.vesudev.pedidosapp.screens.OrdersScreen
-
 import com.vesudev.pedidosapp.screens.ProfileScreen
 import com.vesudev.pedidosapp.screens.SecondOnBoarding
 import com.vesudev.pedidosapp.screens.ShoppingCartScreen
@@ -42,10 +42,8 @@ fun FirtsNavigationGraph() {
     val navController = rememberNavController()
     val cartViewModel: CartViewModel = viewModel()
 
+
     CurrentUserVerify(navController, currentUser)
-
-
-
 
     NavHost(navController = navController, startDestination = AppScreens.FirstOnBoarding.route) {
 
@@ -116,6 +114,7 @@ fun FirtsNavigationGraph() {
     }
 
 
+
 }
 
 @Composable
@@ -125,7 +124,7 @@ fun CurrentUserVerify(
 ) {
     LaunchedEffect(currentUser) {
         when {
-            currentUser?.email?.lowercase() == "vesudev18@gmail.com" -> {
+            currentUser?.email?.lowercase() == AdminsDB.User.Jeffry -> {
                 // Si es el usuario admin, navegar a la pantalla de pedidos
                 if (navController.currentDestination?.route != AppScreens.OrdersScreen.route) {
                     navController.navigate(AppScreens.OrdersScreen.route) {
@@ -133,6 +132,7 @@ fun CurrentUserVerify(
                     }
                 }
             }
+
             currentUser != null -> {
                 // Usuario autenticado, navegar a la pantalla principal
                 if (navController.currentDestination?.route != AppScreens.MainAppScreen.route) {
@@ -142,9 +142,11 @@ fun CurrentUserVerify(
                 }
             }
             else -> {
-                // Usuario no autenticado, navegar a la pantalla de inicio de sesión
-                if (navController.currentDestination?.route != AppScreens.LoginScreen.route) {
-                    navController.navigate(AppScreens.LoginScreen.route) {
+                // Usuario no autenticado
+                if (navController.currentDestination?.route != AppScreens.FirstOnBoarding.route &&
+                    navController.currentDestination?.route != AppScreens.LoginScreen.route) {
+                    // Si no estás en Onboarding ni en Login, ir a Onboarding
+                    navController.navigate(AppScreens.FirstOnBoarding.route) {
                         popUpTo(AppScreens.FirstOnBoarding.route) { inclusive = true }
                     }
                 }
@@ -152,5 +154,4 @@ fun CurrentUserVerify(
         }
     }
 }
-
 

@@ -1,16 +1,11 @@
 package com.vesudev.pedidosapp.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = Color(0xFFFF5A5A), // Un rojo más oscuro
@@ -29,7 +24,7 @@ private val LightColorScheme = lightColorScheme(
     primary = rojo,                   // Color primario
     secondary = rojoPastel,            // Color secundario (usualmente tonos más suaves)
     tertiary = rojoCoral,              // Color terciario
-    onPrimary = negro,                 // Color de los elementos sobre el color primario (como textos)
+    onPrimary = blanco,                 // Color de los elementos sobre el color primario (como textos)
     background = Color(0xFFFFFFFF),    // Fondo típico de modo claro (blanco)
     surface = Color(0xFFF5F5F5),       // Color de las superficies como tarjetas y diálogos (gris claro)
     onSecondary = Color(0xFF000000),   // Color de los elementos sobre el secundario (negro para buen contraste)

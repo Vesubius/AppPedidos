@@ -41,6 +41,7 @@ import com.google.firebase.ktx.Firebase
 import com.vesudev.pedidosapp.R
 import com.vesudev.pedidosapp.navigation.AppScreens
 import com.vesudev.pedidosapp.reusable.AppTittle
+
 import com.vesudev.pedidosapp.reusable.GmailTextField
 import com.vesudev.pedidosapp.reusable.Logo
 import com.vesudev.pedidosapp.reusable.PasswordTextField
@@ -71,7 +72,8 @@ fun LoginTopAppBar() {
             Text(
                 text = "Iniciar Sesion",
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         colors = topAppBarColors(MaterialTheme.colorScheme.primary)
@@ -196,7 +198,8 @@ fun LoginLogInButton(
 
         }) {
         Text(
-            text = "Iniciar Sesion"
+            text = "Iniciando Sesion",
+            color = MaterialTheme.colorScheme.onPrimary
         )
     }
 }
@@ -209,11 +212,16 @@ fun iniciarSesion(
     navController: NavController
 ) {
     val auth = Firebase.auth
+    val currentUser = auth.currentUser
+
 
     auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
         if (task.isSuccessful) {
             Toast.makeText(context, "Inicio de Sesion exitoso", Toast.LENGTH_LONG).show()
-            navController.navigate(route = AppScreens.MainAppScreen.route)
+
+            navController.navigate(route = AppScreens.MainAppScreen.route){
+                popUpTo(AppScreens.FirstOnBoarding.route){ inclusive = true }
+                }
 
         } else {
             Toast.makeText(context, "Inicio de Sesion Fallido:${task.exception}", Toast.LENGTH_LONG)

@@ -58,6 +58,7 @@ fun SignUpTopBar() {
             Text(
                 text = "Registrarse",
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.fillMaxWidth()
             )
         },

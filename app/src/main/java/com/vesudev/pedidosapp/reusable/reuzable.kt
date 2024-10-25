@@ -19,6 +19,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,7 +37,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.vesudev.pedidosapp.R
@@ -76,15 +79,6 @@ fun OpenFacebookButton() {
 }
 
 
-@Composable
-fun TestButton(navController: NavController, text: String) {
-    //boton de prueba
-    Button(onClick = { navController.navigate(route = AppScreens.MainAppScreen.route) }) {
-        Text(
-            text
-        )
-    }
-}
 
 @Composable
 fun Logo() {
