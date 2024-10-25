@@ -42,7 +42,7 @@ fun ProfileScreen(navController: NavController) {
         Button(onClick = {
             signOut()
             navController.navigate(route = AppScreens.LoginScreen.route) {
-                popUpTo(AppScreens.MainAppScreen.route) { inclusive = true }
+                popUpTo(AppScreens.HomeScreen.route) { inclusive = true }
             }
         }) { Text(text = "Cerrar Sesion") }
     }

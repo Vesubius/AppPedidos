@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +38,7 @@ import androidx.navigation.NavController
 
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.vesudev.pedidosapp.AdminDB.AdminsDB
 
 import com.vesudev.pedidosapp.R
 import com.vesudev.pedidosapp.navigation.AppScreens
@@ -213,24 +215,51 @@ fun iniciarSesion(
     navController: NavController
 ) {
     val auth = Firebase.auth
-    val currentUser = auth.currentUser
-
 
     auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
         if (task.isSuccessful) {
-            Toast.makeText(context, "Inicio de Sesion exitoso", Toast.LENGTH_LONG).show()
+            // Obtenemos el usuario autenticado directamente del resultado de la tarea
+            val signedInUser = task.result.user
 
-            navController.navigate(route = AppScreens.MainAppScreen.route) {
-                popUpTo(AppScreens.FirstOnBoarding.route) { inclusive = true }
+            when {
+                // Si la lista de Admins contiene el correo del usuario autenticado, significa que es Admin
+                AdminsDB.User.UserList.contains(signedInUser?.email?.lowercase()) -> {
+                    // Navega a la pantalla principal de admin si no está ya en ella
+                    if (navController.currentDestination?.route != AppScreens.OrdersScreen.route) {
+                        navController.navigate(AppScreens.OrdersScreen.route) {
+                            popUpTo(AppScreens.FirstOnBoarding.route) { inclusive = true }
+                        }
+                        Toast.makeText(context, "Inicio de Sesion exitoso", Toast.LENGTH_LONG).show()
+                    }
+                }
+
+                signedInUser != null -> {
+                    // Usuario autenticado, navegar a la pantalla principal del usuario
+                    if (navController.currentDestination?.route != AppScreens.MainAppScreen.route) {
+                        navController.navigate(AppScreens.MainAppScreen.route) {
+                            popUpTo(AppScreens.FirstOnBoarding.route) { inclusive = true }
+                        }
+                    }
+                }
+
+                else -> {
+                    // Usuario no autenticado, redirigir al Onboarding si es necesario
+                    if (navController.currentDestination?.route != AppScreens.FirstOnBoarding.route &&
+                        navController.currentDestination?.route != AppScreens.LoginScreen.route
+                    ) {
+                        navController.navigate(AppScreens.FirstOnBoarding.route) {
+                            popUpTo(AppScreens.FirstOnBoarding.route) { inclusive = true }
+                        }
+                    }
+                }
             }
-
         } else {
-            Toast.makeText(context, "Inicio de Sesion Fallido:${task.exception}", Toast.LENGTH_LONG)
-                .show()
+            // Mensaje de error si la autenticación falla
+            Toast.makeText(context, "Inicio de Sesion Fallido: ${task.exception}", Toast.LENGTH_LONG).show()
             navController.navigate(route = AppScreens.LoginScreen.route)
-
         }
     }
 }
+
 
 

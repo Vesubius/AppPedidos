@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -15,7 +16,8 @@ import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.vesudev.pedidosapp.AdminDB.AdminsDB
-import com.vesudev.pedidosapp.cartViewModel.CartViewModel
+import com.vesudev.pedidosapp.ViewModels.CartViewModel
+import com.vesudev.pedidosapp.ViewModels.OrderViewModel
 import com.vesudev.pedidosapp.screens.DetailScreen
 import com.vesudev.pedidosapp.screens.FirstOnBoarding
 import com.vesudev.pedidosapp.screens.HomeScreen
@@ -29,7 +31,9 @@ import com.vesudev.pedidosapp.screens.SignUpScreen
 
 
 @Composable
-fun FirtsNavigationGraph() {
+fun NavigationGraph() {
+
+
     // Obtén la instancia de FirebaseAuth
     val auth = FirebaseAuth.getInstance()
 
@@ -42,6 +46,7 @@ fun FirtsNavigationGraph() {
     val navController = rememberNavController()
     val cartViewModel: CartViewModel = viewModel()
 
+    val orderViewModel: OrderViewModel = viewModel()
 
     CurrentUserVerify(navController, currentUser)
 
@@ -81,7 +86,7 @@ fun FirtsNavigationGraph() {
 
         //Pantalla ShoppingCartScreen
         composable(route = AppScreens.ShoppingCartScreen.route) {
-            ShoppingCartScreen(navController, cartViewModel,)
+            ShoppingCartScreen(navController, cartViewModel,orderViewModel)
         }
 
         //Pantalla ProfileScreen
@@ -124,8 +129,9 @@ fun CurrentUserVerify(
 ) {
     LaunchedEffect(currentUser) {
         when {
-            currentUser?.email?.lowercase() == AdminsDB.User.Jeffry -> {
-                // Si es el usuario admin, navegar a la pantalla de pedidos
+            //Si la Lista de Admins Contiene El Usuario Actual Significa que es Admin
+           AdminsDB.User.UserList.contains(currentUser?.email?.lowercase()) -> {
+                //Muestra la pantalla principal de admin
                 if (navController.currentDestination?.route != AppScreens.OrdersScreen.route) {
                     navController.navigate(AppScreens.OrdersScreen.route) {
                         popUpTo(AppScreens.FirstOnBoarding.route) { inclusive = true }

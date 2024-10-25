@@ -1,7 +1,6 @@
 package com.vesudev.pedidosapp.screens
 
 
-import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.ScrollState
@@ -32,8 +31,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 
 import androidx.compose.ui.Alignment
@@ -44,16 +41,13 @@ import androidx.compose.ui.layout.ContentScale
 
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.vesudev.pedidosapp.cartViewModel.CartViewModel
+import com.vesudev.pedidosapp.ViewModels.CartViewModel
 import com.vesudev.pedidosapp.navigation.AppScreens
 
 import com.vesudev.pedidosapp.reusable.extractFileNameWithoutExtension
