@@ -2,6 +2,8 @@ package com.vesudev.pedidosapp.ViewModels
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import com.vesudev.pedidosapp.reusable.extractFileNameWithoutExtension
+import com.vesudev.pedidosapp.screens.priceDesigner
 
 
 data class CartItem(
@@ -38,5 +40,15 @@ class CartViewModel : ViewModel() {
     fun getCartItemsValue():Int {
         return cartItems.size
     }
+
+    fun totalPriceOfOrder(): Int {
+        var total = 0
+        for (item in cartItems) {
+            val price = priceDesigner(extractFileNameWithoutExtension(item.url)) // Asumiendo que `extractFileNameWithoutExtension` retorna el nombre del producto
+            total += price * item.cantidad
+        }
+        return total
+    }
+
 
 }

@@ -142,11 +142,13 @@ fun ShoppingContent(
                     }
 
                     Column(modifier = Modifier.padding(10.dp)) {
+
                         Text(text = "$productName", fontWeight = FontWeight.Bold)
                         Text(
-                            text = "Precio ₡${priceDesigner(productName).toString()}",
+                            text = "Precio ₡${priceDesigner(productName) * cartItem.cantidad}",
                             fontWeight = FontWeight.Bold
                         )
+                        cartItem.cantidad
                         // Contador de productos
                         Counter(cartViewModel, cartItem, navController) // Pasamos el cartItem
                     }
@@ -165,6 +167,13 @@ fun ShoppingContent(
                 val cartItemsSize = cartViewModel.getCartItemsValue()
                 // Verificamos que exista algo en el carrito antes de mostrar el boton de hacer pedido
                 if (cartItemsSize != 0) {
+                    // Muestra el precio total
+                    Text(
+                        text = "Total: ₡${cartViewModel.totalPriceOfOrder()}",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(16.dp)
+                    )
                     Button(onClick = { /* Hacer pedido */ }) {
                         Text(
                             text = "Hacer Pedido",
@@ -249,5 +258,6 @@ sealed class ProductDB(val name: String, val price: Int) {
 }
 
 fun priceDesigner(name: String): Int {
+
     return ProductDB.findPriceByName(name)
 }
