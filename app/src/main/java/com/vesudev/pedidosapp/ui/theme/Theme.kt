@@ -21,14 +21,12 @@ private val DarkColorScheme = darkColorScheme(
 
 
 private val LightColorScheme = lightColorScheme(
-    primary = rojo,                   // Color primario
-    secondary = rojoPastel,            // Color secundario (usualmente tonos más suaves)
-    tertiary = rojoCoral,              // Color terciario
-    onPrimary = blanco,                 // Color de los elementos sobre el color primario (como textos)
-    background = Color(0xFFFFFFFF),    // Fondo típico de modo claro (blanco)
-    surface = Color(0xFFF5F5F5),       // Color de las superficies como tarjetas y diálogos (gris claro)
-    onSecondary = Color(0xFF000000),   // Color de los elementos sobre el secundario (negro para buen contraste)
-    onBackground = Color(0xFF000000),  // Texto y elementos sobre el fondo (negro para legibilidad)
+    primary = RojoClaro,               // Color primario
+    secondary = AzulClaro,             //color Secundario
+    onPrimary = blanco,          // Color de los elementos sobre el color primario (como textos)
+    background = grisOscuro,    // Fondo típico de modo claro (blanco)
+    surface = grisClaro,       // Color de las superficies como tarjetas y diálogos (gris claro)
+    onBackground = RojoOscuro,  // Texto y elementos sobre el fondo (negro para legibilidad)
     onSurface = Color(0xFF000000)      // Texto y elementos sobre las superficies (negro para buen contraste)
 
 

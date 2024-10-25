@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -25,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -55,29 +58,33 @@ fun OpenFacebookButton() {
     // URL personalizada para la app de Facebook
     val facebookAppUri = "fb://page/100085654833004"
 
-    // Botón para abrir la página de Facebook
-    TextButton(onClick = {
-        // Intent para abrir la aplicación de Facebook
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(facebookAppUri))
-        // Verificar si hay alguna actividad que pueda manejar el intent
-        if (intent.resolveActivity(context.packageManager) != null) {
-            context.startActivity(intent) // Abre la app de Facebook
-        } else {
-            // Si no está instalada, abre el navegador
-            val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(facebookPageUrl))
-            context.startActivity(webIntent)
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+        // Botón para abrir la página de Facebook
+        TextButton(onClick = {
+            // Intent para abrir la aplicación de Facebook
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(facebookAppUri))
+            // Verificar si hay alguna actividad que pueda manejar el intent
+            if (intent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(intent) // Abre la app de Facebook
+            } else {
+                // Si no está instalada, abre el navegador
+                val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(facebookPageUrl))
+                context.startActivity(webIntent)
+            }
+        }) {
+
+            Text(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.onSurface)
+                    .padding(end = 10.dp),
+                fontSize = 18.sp,
+                textAlign = TextAlign.End,
+                text = "By VesuDev",
+                color = MaterialTheme.colorScheme.secondary
+            )
         }
-    }) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 10.dp),
-            textAlign = TextAlign.End,
-            text = "By VesuDev"
-        )
     }
 }
-
 
 
 @Composable
@@ -137,7 +144,7 @@ fun GmailTextField(email: String, onEmailChange: (String) -> Unit) {
 
 
 @Composable
-fun PasswordTextField(password: String,labeltext:String, onPasswordChange: (String) -> Unit) {
+fun PasswordTextField(password: String, labeltext: String, onPasswordChange: (String) -> Unit) {
     var isPasswordVisible by remember { mutableStateOf(false) }
 
     //Campo Contraseña

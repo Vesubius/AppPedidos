@@ -1,6 +1,7 @@
 package com.vesudev.pedidosapp.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +31,7 @@ import com.vesudev.pedidosapp.navigation.AppScreens
 @Composable
 fun SecondOnBoarding(navController: NavController) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -91,7 +92,9 @@ fun SecondOnBoarding(navController: NavController) {
                     }
                 }
 
-                Button(onClick = { navController.navigate(route = AppScreens.HomeScreen.route) }) {
+                Button(onClick = { navController.navigate(route = AppScreens.HomeScreen.route){
+                    popUpTo(AppScreens.FirstOnBoarding.route){inclusive = true}
+                } }) {
                     Text(
                         text = "Siguiente"
                     )

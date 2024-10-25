@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -91,7 +92,7 @@ fun SignUpContent(navController: NavController) {
             Register(email, password, confirmpassword, navController, context)
         }) {
             Text(
-                text = "Registrarse"
+                text = "Registrarse",fontSize = 20.sp
             )
         }
     }
@@ -133,13 +134,13 @@ fun createUser(
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
 
             if (task.isSuccessful) {
-                Toast.makeText(context, "Inicio de Sesion Exitoso", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Cuenta Creada", Toast.LENGTH_LONG).show()
                 navController.navigate(route = AppScreens.LoginScreen.route)
             } else {
                 Toast.makeText(
                     context,
-                    "Error al iniciar Sesion:${task.exception}",
-                    Toast.LENGTH_SHORT
+                    "Error al Crear Cuenta:${task.exception}",
+                    Toast.LENGTH_LONG
                 ).show()
                 navController.navigate(route = AppScreens.SignUpScreen.route)
             }

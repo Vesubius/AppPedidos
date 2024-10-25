@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -91,7 +92,7 @@ fun MainAppScreen(
             content = { innerPadding ->
                 MainAppContent(
                     modifier = Modifier.padding(innerPadding),
-                    urlsCarnes, urlsEmbutidos, navController,cartViewModel
+                    urlsCarnes, urlsEmbutidos, navController, cartViewModel
                 )
             })
 
@@ -129,7 +130,7 @@ fun MainAppScreenTopBar(navController: NavController, cartViewModel: CartViewMod
                     contentDescription = "Carrito de compras",
                     tint = MaterialTheme.colorScheme.onPrimary,
 
-                )
+                    )
             }
         }
     )
@@ -166,10 +167,12 @@ fun MainAppContent(
         )
 
         //Seccion Embutidos
-        sausagesSection(scrollEmbutidos = scrollEmbutidos,
+        sausagesSection(
+            scrollEmbutidos = scrollEmbutidos,
             urlEmbutidos = urlEmbutidos,
             navController = navController,
-            cartViewModel = cartViewModel)
+            cartViewModel = cartViewModel
+        )
 
     }
 }
@@ -184,14 +187,15 @@ fun MeatSection(
 ) {
 
     Box {
-        Column {
+        Column(modifier = Modifier.background(MaterialTheme.colorScheme.onBackground)) {
             //Titulo de la seccion
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
                 text = "Carnes",
                 fontSize = 25.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimary
             )
             Row(
                 modifier = Modifier
@@ -216,7 +220,13 @@ fun MeatSection(
                                 contentScale = ContentScale.Crop
                             )
 
-                            Button(onClick = {cartViewModel.addItem(uri)}) { Text(text = "Agregar $name") }
+                            Button(onClick = { cartViewModel.addItem(uri) }) {
+                                Text(
+                                    text = "Agregar $name",
+                                    fontSize = 20.sp,
+                                    color = MaterialTheme.colorScheme.onPrimary
+                                )
+                            }
                         }
                     }
 
@@ -238,7 +248,7 @@ fun sausagesSection(
 ) {
     //Seccion de Embutidos
     Box {
-        Column {
+        Column(modifier = Modifier.background(MaterialTheme.colorScheme.onBackground)) {
             //Titulo de la seccion
             Text(
                 modifier = Modifier
@@ -246,6 +256,7 @@ fun sausagesSection(
                 text = "Embutidos",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimary
             )
             Row(
                 modifier = Modifier
@@ -267,7 +278,13 @@ fun sausagesSection(
                             contentScale = ContentScale.Crop
                         )
 
-                        Button(onClick = {cartViewModel.addItem(uri)}) { Text(text = "Agregar $name") }
+                        Button(onClick = { cartViewModel.addItem(uri) }) {
+                            Text(
+                                text = "Agregar $name",
+                                fontSize = 20.sp,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
                     }
                 }
 

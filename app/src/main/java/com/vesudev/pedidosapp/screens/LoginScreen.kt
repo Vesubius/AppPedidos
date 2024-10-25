@@ -199,6 +199,7 @@ fun LoginLogInButton(
         }) {
         Text(
             text = "Iniciando Sesion",
+            fontSize = 20.sp,
             color = MaterialTheme.colorScheme.onPrimary
         )
     }
@@ -219,9 +220,9 @@ fun iniciarSesion(
         if (task.isSuccessful) {
             Toast.makeText(context, "Inicio de Sesion exitoso", Toast.LENGTH_LONG).show()
 
-            navController.navigate(route = AppScreens.MainAppScreen.route){
-                popUpTo(AppScreens.FirstOnBoarding.route){ inclusive = true }
-                }
+            navController.navigate(route = AppScreens.MainAppScreen.route) {
+                popUpTo(AppScreens.FirstOnBoarding.route) { inclusive = true }
+            }
 
         } else {
             Toast.makeText(context, "Inicio de Sesion Fallido:${task.exception}", Toast.LENGTH_LONG)

@@ -1,11 +1,14 @@
 package com.vesudev.pedidosapp.screens
 
+import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.vesudev.pedidosapp.R
 import com.vesudev.pedidosapp.navigation.AppScreens
@@ -57,13 +62,18 @@ fun MainAppContent(padding: PaddingValues, navController: NavController) {
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
 
-
+        Spacer(modifier = Modifier.height(30.dp))
         Logo()
+
+        Spacer(modifier = Modifier.height(20.dp))
 
         HomeLogInButton(navController)
 
+        Spacer(modifier = Modifier.height(20.dp))
+
         SignUpButton(navController)
 
+        Spacer(modifier = Modifier.height(50.dp))
         //By VesuDev Text
         OpenFacebookButton()
 
@@ -84,7 +94,7 @@ private fun background() {
 fun SignUpButton(navController: NavController) {
     Button(onClick = { navController.navigate(route = AppScreens.SignUpScreen.route) }) {
         Text(
-            "Registrarse"
+            "Registrarse",fontSize = 20.sp
         )
     }
 }
@@ -93,7 +103,7 @@ fun SignUpButton(navController: NavController) {
 fun HomeLogInButton(navController: NavController) {
     Button(onClick = { navController.navigate(route = AppScreens.LoginScreen.route) }) {
         Text(
-            "Iniciar Sesion"
+            "Iniciar Sesion", fontSize = 20.sp
         )
     }
 }
