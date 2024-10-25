@@ -28,6 +28,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCompositionContext
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.vesudev.pedidosapp.ViewModels.CartItem
 import com.vesudev.pedidosapp.ViewModels.CartViewModel
 import com.vesudev.pedidosapp.ViewModels.OrderViewModel
 
@@ -96,20 +102,18 @@ fun ShoppingTopBar(navController: NavController) {
 fun ShoppingContent(
     navController: NavController,
     cartViewModel: CartViewModel,
-    OrderViewModel: OrderViewModel,
-
-    ) {
+    orderViewModel: OrderViewModel,
+) {
 
     LazyColumn {
-
-        items(cartViewModel.cartItems) { item ->
-            val productName = extractFileNameWithoutExtension(item)
+        items(cartViewModel.cartItems) { cartItem ->
+            val productName = extractFileNameWithoutExtension(cartItem.url)
             Column {
-                Row() {
+                Row {
                     Box {
                         // Mostrar cada imagen en el carrito
                         AsyncImage(
-                            model = item, // item es la URL
+                            model = cartItem.url,
                             contentDescription = "imagen de $productName",
                             modifier = Modifier
                                 .width(200.dp)
@@ -117,10 +121,14 @@ fun ShoppingContent(
                             contentScale = ContentScale.Crop
                         )
 
-                        //Eliminar item
+                        // Eliminar item
                         IconButton(onClick = {
-                            cartViewModel.deleteItem(url = item)
-                            navController.navigate(route = AppScreens.ShoppingCartScreen.route)
+                            cartViewModel.deleteItem(url = cartItem.url)
+                            navController.navigate(route = AppScreens.ShoppingCartScreen.route) {
+                                popUpTo(AppScreens.ShoppingCartScreen.route) {
+                                    inclusive = true
+                                }
+                            }
                         }) {
                             Icon(
                                 modifier = Modifier
@@ -129,8 +137,7 @@ fun ShoppingContent(
                                     .height(60.dp),
                                 imageVector = Icons.Default.Clear,
                                 contentDescription = null,
-
-                                )
+                            )
                         }
                     }
 
@@ -140,16 +147,13 @@ fun ShoppingContent(
                             text = "Precio ₡${priceDesigner(productName).toString()}",
                             fontWeight = FontWeight.Bold
                         )
-                        //Contador de productos
-                        Counter()
-
+                        // Contador de productos
+                        Counter(cartViewModel, cartItem, navController) // Pasamos el cartItem
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(8.dp)) // Espaciado entre imágenes
-
-
         }
         item {
             Spacer(modifier = Modifier.padding(top = 40.dp))
@@ -158,29 +162,46 @@ fun ShoppingContent(
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
-                Button(onClick = { }) {
-                    Text(
-                        text = "Hacer Pedido",
-                        fontSize = 18.sp,
-                        textAlign = TextAlign.Center
-                    )
+                val cartItemsSize = cartViewModel.getCartItemsValue()
+                // Verificamos que exista algo en el carrito antes de mostrar el boton de hacer pedido
+                if (cartItemsSize != 0) {
+                    Button(onClick = { /* Hacer pedido */ }) {
+                        Text(
+                            text = "Hacer Pedido",
+                            fontSize = 18.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-
 @Composable
-fun Counter() {
+fun Counter(cartViewModel: CartViewModel, cartItem: CartItem, navController: NavController) {
+
     Row(verticalAlignment = Alignment.CenterVertically) {
-        IconButton(onClick = {}) {
+        IconButton(onClick = {
+            cartViewModel.productCounterDecrement(cartItem)
+            navController.navigate(route = AppScreens.ShoppingCartScreen.route) {
+                popUpTo(AppScreens.ShoppingCartScreen.route) {
+                    inclusive = true
+                }
+            }
+        }) {
             Icon(Icons.Filled.KeyboardArrowDown, contentDescription = "Quitar Product")
         }
-        Text(text = "0")
+        Text(text = cartItem.cantidad.toString()) // Usamos la cantidad del cartItem
 
-        IconButton(onClick = {}) {
+        IconButton(onClick = {
+            cartViewModel.productCounterIncrement(cartItem)
+            navController.navigate(route = AppScreens.ShoppingCartScreen.route) {
+                popUpTo(AppScreens.ShoppingCartScreen.route) {
+                    inclusive = true
+                }
+            }
+        }) {
             Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Agregar Product")
         }
     }
