@@ -94,7 +94,7 @@ private fun background() {
 fun SignUpButton(navController: NavController) {
     Button(onClick = { navController.navigate(route = AppScreens.SignUpScreen.route) }) {
         Text(
-            "Registrarse",fontSize = 20.sp
+            "Registrarse",fontSize = 17.sp
         )
     }
 }
@@ -103,7 +103,7 @@ fun SignUpButton(navController: NavController) {
 fun HomeLogInButton(navController: NavController) {
     Button(onClick = { navController.navigate(route = AppScreens.LoginScreen.route) }) {
         Text(
-            "Iniciar Sesion", fontSize = 20.sp
+            "Iniciar Sesion", fontSize = 17.sp
         )
     }
 }

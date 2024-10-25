@@ -33,7 +33,9 @@ import com.vesudev.pedidosapp.ui.theme.PedidosAppTheme
 fun FirstOnBoarding(navController: NavController) {
     PedidosAppTheme {
         Column(
-            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -63,9 +65,14 @@ fun FirstOnBoarding(navController: NavController) {
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Button(onClick = { navController.navigate(route = AppScreens.HomeScreen.route) }) {
+                    Button(onClick = {
+                        navController.navigate(route = AppScreens.HomeScreen.route) {
+                            popUpTo(AppScreens.FirstOnBoarding.route) { inclusive = true }
+                        }
+                    }) {
                         Text(
-                            text = "Saltar"
+                            text = "Saltar",
+                            fontSize = 17.sp
                         )
                     }
 
@@ -93,7 +100,8 @@ fun FirstOnBoarding(navController: NavController) {
 
                     Button(onClick = { navController.navigate(route = AppScreens.SecondOnBoarding.route) }) {
                         Text(
-                            text = "Siguiente"
+                            text = "Siguiente",
+                            fontSize = 17.sp
                         )
                     }
 

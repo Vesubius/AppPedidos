@@ -52,27 +52,34 @@ import com.vesudev.pedidosapp.navigation.AppScreens
 @Composable
 fun OpenFacebookButton() {
     val context = LocalContext.current
-
-    // URL de fallback si la app de Facebook no está instalada
     val facebookPageUrl = "https://www.facebook.com/100085654833004"
-    // URL personalizada para la app de Facebook
     val facebookAppUri = "fb://page/100085654833004"
+    val alternativeFacebookAppUri = "fb://facewebmodal/f?href=$facebookPageUrl"
 
-    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.End
+    ) {
         // Botón para abrir la página de Facebook
         TextButton(onClick = {
-            // Intent para abrir la aplicación de Facebook
+            // Intent principal para abrir la app de Facebook directamente
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(facebookAppUri))
-            // Verificar si hay alguna actividad que pueda manejar el intent
+
+            // Comprueba si el Intent puede ser manejado
             if (intent.resolveActivity(context.packageManager) != null) {
-                context.startActivity(intent) // Abre la app de Facebook
+                context.startActivity(intent)
             } else {
-                // Si no está instalada, abre el navegador
-                val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(facebookPageUrl))
-                context.startActivity(webIntent)
+                // Intent alternativo si el principal no funciona
+                val alternativeIntent = Intent(Intent.ACTION_VIEW, Uri.parse(alternativeFacebookAppUri))
+                if (alternativeIntent.resolveActivity(context.packageManager) != null) {
+                    context.startActivity(alternativeIntent)
+                } else {
+                    // Si ninguno de los Intents abre la app, se redirige al navegador
+                    val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(facebookPageUrl))
+                    context.startActivity(webIntent)
+                }
             }
         }) {
-
             Text(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.onSurface)

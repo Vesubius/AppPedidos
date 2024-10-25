@@ -95,7 +95,7 @@ fun LoginScreenContent(navController: NavController) {
 
         Logo()
 
-        AppTittle()
+
 
         GmailTextField(email = email, onEmailChange = { email = it })
 
