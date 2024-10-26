@@ -3,6 +3,7 @@ package com.vesudev.pedidosapp.screens
 
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,8 +16,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -31,12 +34,16 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 
 
 import androidx.compose.ui.text.font.FontWeight
@@ -97,37 +104,57 @@ fun MainAppScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainAppScreenTopBar(navController: NavController, cartViewModel: CartViewModel) {
-    TopAppBar(
-        title = {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = "Centro de Carnes San Isidro",
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-        },
-        colors = topAppBarColors(MaterialTheme.colorScheme.primary),
-        navigationIcon = {
-            IconButton(onClick = { navController.navigate(route = AppScreens.ProfileScreen.route) }) {
-                Icon(
-                    Icons.Default.Person,
-                    contentDescription = "Perfil",
-                    tint = MaterialTheme.colorScheme.onPrimary
+    PedidosAppTheme {
+        TopAppBar(
+            title = {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Centro de Carnes San Isidro",
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
-            }
-        },
-
-        actions = {
-            IconButton(onClick = { navController.navigate(route = AppScreens.ShoppingCartScreen.route) }) {
-                Icon(
-                    Icons.Default.ShoppingCart,
-                    contentDescription = "Carrito de compras",
-                    tint = MaterialTheme.colorScheme.onPrimary,
-
+            },
+            colors = topAppBarColors(MaterialTheme.colorScheme.primary),
+            navigationIcon = {
+                IconButton(onClick = { navController.navigate(route = AppScreens.ProfileScreen.route) }) {
+                    Icon(
+                        Icons.Default.Person,
+                        contentDescription = "Perfil",
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
+                }
+            },
+            actions = {
+                IconButton(onClick = {
+                    navController.navigate(route = AppScreens.ShoppingCartScreen.route)
+                }) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            Icons.Default.ShoppingCart,
+                            contentDescription = "Carrito de compras",
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                        )
+
+                        // Muestra el contador solo si hay elementos en el carrito
+                        if (cartViewModel.totalProductCount > 0) {
+                            Text(
+                                text = "${cartViewModel.totalProductCount.toString()}",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = MaterialTheme.colorScheme.surface,
+                                modifier = Modifier
+                                    .offset(x = 9.dp, y = -11.dp)
+                                    .background(
+                                        MaterialTheme.colorScheme.primary, shape = CircleShape
+                                    )
+                                    .padding(0.dp)
+                            )
+                        }
+                    }
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable
@@ -213,8 +240,15 @@ fun MeatSection(
                                 contentDescription = "",
                                 contentScale = ContentScale.Crop
                             )
-
-                            Button(onClick = { cartViewModel.addItem(uri) }) {
+                            val context = LocalContext.current
+                            Button(onClick = {
+                                cartViewModel.addItem(uri)
+                                Toast.makeText(
+                                    context,
+                                    "${extractFileNameWithoutExtension(uri)} Agregado al carrito",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }) {
                                 Text(
                                     text = "Agregar $name",
                                     fontSize = 20.sp,
@@ -271,8 +305,16 @@ fun sausagesSection(
                             contentDescription = "",
                             contentScale = ContentScale.Crop
                         )
+                        val context = LocalContext.current
 
-                        Button(onClick = { cartViewModel.addItem(uri) }) {
+                        Button(onClick = {
+                            cartViewModel.addItem(uri)
+                            Toast.makeText(
+                                context,
+                                "${extractFileNameWithoutExtension(uri)} Agregado al carrito",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }) {
                             Text(
                                 text = "Agregar $name",
                                 fontSize = 20.sp,
