@@ -123,6 +123,30 @@ fun AppTittle() {
         fontSize = 25.sp
     )
 }
+@Composable
+fun UserTextField(userName: String,labeltext: String, onUserChange: (String) -> Unit) {
+    //Campo Nombre de usuario
+    Box {
+        Column {
+            Text(
+                text = labeltext,
+                fontWeight = FontWeight.Normal,
+                fontSize = 20.sp
+            )
+
+            OutlinedTextField(
+                modifier = Modifier.padding(top = 10.dp),
+                value = userName,
+                onValueChange = { userName -> onUserChange(userName) },
+                placeholder = { Text(text = "User") },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Text
+                ),
+                singleLine = true
+            )
+        }
+    }
+}
 
 @Composable
 fun GmailTextField(email: String, onEmailChange: (String) -> Unit) {

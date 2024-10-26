@@ -174,7 +174,8 @@ fun ShoppingContent(
                         fontSize = 18.sp,
                         modifier = Modifier.padding(16.dp)
                     )
-                    Button(onClick = { /* Hacer pedido */ }) {
+
+                    Button(onClick = {  }) {
                         Text(
                             text = "Hacer Pedido",
                             fontSize = 18.sp,

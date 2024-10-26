@@ -101,4 +101,10 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.7.0")
 
 
+    implementation ("com.google.firebase:firebase-firestore-ktx")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1") // Para LiveData
+
+
 }
+
+

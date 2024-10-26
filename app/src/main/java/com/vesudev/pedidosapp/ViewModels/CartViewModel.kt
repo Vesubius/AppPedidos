@@ -44,7 +44,7 @@ class CartViewModel : ViewModel() {
     fun totalPriceOfOrder(): Int {
         var total = 0
         for (item in cartItems) {
-            val price = priceDesigner(extractFileNameWithoutExtension(item.url)) // Asumiendo que `extractFileNameWithoutExtension` retorna el nombre del producto
+            val price = priceDesigner(extractFileNameWithoutExtension(item.url))
             total += price * item.cantidad
         }
         return total

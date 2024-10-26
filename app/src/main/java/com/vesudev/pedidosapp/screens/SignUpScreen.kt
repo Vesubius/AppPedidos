@@ -25,11 +25,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.vesudev.pedidosapp.navigation.AppScreens
 import com.vesudev.pedidosapp.reusable.GmailTextField
 import com.vesudev.pedidosapp.reusable.PasswordTextField
+
+import com.vesudev.pedidosapp.reusable.UserTextField
 import com.vesudev.pedidosapp.ui.theme.PedidosAppTheme
 
 
@@ -73,6 +76,7 @@ fun SignUpContent(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmpassword by remember { mutableStateOf("") }
+    var userName by remember { mutableStateOf("") }
     val context = LocalContext.current
 
     Column(
@@ -81,6 +85,7 @@ fun SignUpContent(navController: NavController) {
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
 
+        UserTextField(userName,"Nombre de usuario", onUserChange ={userName = it} )
 
         GmailTextField(email, onEmailChange = {email = it})
 
@@ -89,7 +94,7 @@ fun SignUpContent(navController: NavController) {
         PasswordTextField(password = confirmpassword, labeltext = "Confirmar Contraseña", onPasswordChange = {confirmpassword = it})
 
         Button(onClick = {
-            Register(email, password, confirmpassword, navController, context)
+            Register(email, password, confirmpassword, navController, context,userName)
         }) {
             Text(
                 text = "Registrarse",fontSize = 20.sp
@@ -104,7 +109,8 @@ fun Register(
     password: String,
     confirmpassword: String,
     navController: NavController,
-    context: Context
+    context: Context,
+    user: String
 ) {
     if (email.isNotEmpty() and password.isNotEmpty()) {
         createUser(
@@ -112,7 +118,9 @@ fun Register(
             password,
             confirmpassword,
             navController,
-            context
+            context,
+            user
+
         )
     } else {
         Toast.makeText(context, "Los campos estan vacios", Toast.LENGTH_SHORT).show()
@@ -126,31 +134,45 @@ fun createUser(
     password: String,
     confirmaPassword: String,
     navController: NavController,
-    context: Context
+    context: Context,
+    user: String
 ) {
     val auth = Firebase.auth
 
     if (password == confirmaPassword) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-
             if (task.isSuccessful) {
-                Toast.makeText(context, "Cuenta Creada", Toast.LENGTH_LONG).show()
-                navController.navigate(route = AppScreens.LoginScreen.route)
+                // Obtenemos el usuario actual
+                val firebaseUser = auth.currentUser
+                // Creamos la solicitud de actualización de perfil con el displayName
+                val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setDisplayName(user)
+                    .build()
+
+                // Actualizamos el perfil del usuario
+                firebaseUser?.updateProfile(profileUpdates)?.addOnCompleteListener { profileTask ->
+                    if (profileTask.isSuccessful) {
+                        Toast.makeText(context, "Cuenta Creada", Toast.LENGTH_LONG).show()
+                        navController.navigate(route = AppScreens.LoginScreen.route)
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Error al actualizar perfil: ${profileTask.exception?.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
             } else {
                 Toast.makeText(
                     context,
-                    "Error al Crear Cuenta:${task.exception}",
+                    "Error al Crear Cuenta: ${task.exception?.message}",
                     Toast.LENGTH_LONG
                 ).show()
                 navController.navigate(route = AppScreens.SignUpScreen.route)
             }
         }
-
     } else {
         Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
         navController.navigate(route = AppScreens.SignUpScreen.route)
     }
-
-
 }
-
