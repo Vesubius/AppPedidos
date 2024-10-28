@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,20 +29,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-
-
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.vesudev.pedidosapp.AdminDB.AdminsDB
-
 import com.vesudev.pedidosapp.R
 import com.vesudev.pedidosapp.navigation.AppScreens
-import com.vesudev.pedidosapp.reusable.AppTittle
-
 import com.vesudev.pedidosapp.reusable.GmailTextField
 import com.vesudev.pedidosapp.reusable.Logo
 import com.vesudev.pedidosapp.reusable.PasswordTextField
@@ -192,6 +185,7 @@ fun LoginLogInButton(
         modifier = Modifier.padding(top = 20.dp),
         onClick = {
             if (email.isNotEmpty() and password.isNotEmpty()) {
+
                 iniciarSesion(email, password, context, navController)
             } else {
                 Toast.makeText(context, "Los campos estan vacios", Toast.LENGTH_SHORT)
@@ -252,12 +246,13 @@ fun iniciarSesion(
                         }
                     }
                 }
-                
+
             }
+
         } else {
             // Mensaje de error si la autenticación falla
             Toast.makeText(context, "Inicio de Sesion Fallido: ${task.exception}", Toast.LENGTH_LONG).show()
-            navController.navigate(route = AppScreens.LoginScreen.route)
+
         }
     }
 }

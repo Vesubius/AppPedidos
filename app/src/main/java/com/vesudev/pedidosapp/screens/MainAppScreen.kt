@@ -71,7 +71,6 @@ fun MainAppScreen(
 
     PedidosAppTheme {
 
-
         //Recuperar imagenes
         LaunchedEffect(urlsEmbutidos, urlsCarnes) {
             //Limpiar la lista de URLs antes de agregar nuevas

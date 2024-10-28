@@ -24,13 +24,14 @@ import com.vesudev.pedidosapp.reusable.signOut
 fun ProfileScreen(navController: NavController) {
     val auth = Firebase.auth
 
-    val user = auth.currentUser
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        val user = auth.currentUser
         Text(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,

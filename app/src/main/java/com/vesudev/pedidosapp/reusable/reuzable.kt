@@ -9,12 +9,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -70,7 +73,8 @@ fun OpenFacebookButton() {
                 context.startActivity(intent)
             } else {
                 // Intent alternativo si el principal no funciona
-                val alternativeIntent = Intent(Intent.ACTION_VIEW, Uri.parse(alternativeFacebookAppUri))
+                val alternativeIntent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse(alternativeFacebookAppUri))
                 if (alternativeIntent.resolveActivity(context.packageManager) != null) {
                     context.startActivity(alternativeIntent)
                 } else {
@@ -82,11 +86,12 @@ fun OpenFacebookButton() {
         }) {
             Text(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.onSurface)
-                    .padding(end = 10.dp),
+                    .background(MaterialTheme.colorScheme.onSurface, shape = CircleShape)
+                    .padding(5.dp),
                 fontSize = 18.sp,
                 textAlign = TextAlign.End,
                 text = "By VesuDev",
+
                 color = MaterialTheme.colorScheme.secondary
             )
         }
@@ -123,8 +128,9 @@ fun AppTittle() {
         fontSize = 25.sp
     )
 }
+
 @Composable
-fun UserTextField(userName: String,labeltext: String, onUserChange: (String) -> Unit) {
+fun UserTextField(userName: String, labeltext: String, onUserChange: (String) -> Unit) {
     //Campo Nombre de usuario
     Box {
         Column {
