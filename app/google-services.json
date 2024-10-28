@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "121245213116",
+    "project_id": "pedidosapp-b7e90",
+    "storage_bucket": "pedidosapp-b7e90.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121245213116:android:9109c755486271a3b58bb9",
+        "android_client_info": {
+          "package_name": "com.vesudev.pedidosapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC37dg_xflXFrzGObyyjFUWpX4rAMri4do"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
